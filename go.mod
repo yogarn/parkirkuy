@@ -3,6 +3,7 @@ module github.com/yogarn/parkirkuy
 go 1.23.1
 
 require (
+	github.com/ahmdyaasiin/ub-auth-without-notification/v2 v2.2.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect

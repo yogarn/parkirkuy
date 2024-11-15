@@ -1,3 +1,5 @@
+github.com/ahmdyaasiin/ub-auth-without-notification/v2 v2.2.1 h1:9/ucYQk6GmzFB6CY9ezPFkuGWnqimWFTQUvFqjL1R74=
+github.com/ahmdyaasiin/ub-auth-without-notification/v2 v2.2.1/go.mod h1:/1MVuDBlrDd1/2l+fXDMW1KR2NxZ7vAaBQENVRyorZg=
 github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
 github.com/andybalholm/brotli v1.0.5/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

@@ -13,6 +13,7 @@ import (
 	"github.com/yogarn/parkirkuy/pkg/bcrypt"
 	"github.com/yogarn/parkirkuy/pkg/jwt"
 	"github.com/yogarn/parkirkuy/pkg/middleware"
+	"github.com/yogarn/parkirkuy/pkg/ub_auth"
 	"gorm.io/gorm"
 )
 
@@ -30,9 +31,10 @@ func LoadEnv() {
 func StartUp(config *Config) {
 	jwt := jwt.Init()
 	bcrypt := bcrypt.Init()
+	ubAuth := ub_auth.Init()
 
 	repository := repository.NewRepository(config.DB)
-	service := service.NewService(repository, bcrypt, jwt)
+	service := service.NewService(repository, bcrypt, jwt, ubAuth)
 
 	middleware := middleware.Init(jwt, service)
 

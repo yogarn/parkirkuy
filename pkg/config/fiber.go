@@ -7,6 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/yogarn/parkirkuy/pkg/response"
+
+	u "github.com/ahmdyaasiin/ub-auth-without-notification/v2"
 )
 
 func StartFiber() *fiber.App {
@@ -34,6 +36,12 @@ func CustomErrorHandler(ctx *fiber.Ctx, err error) error {
 	if errors.As(err, &errorRequest) {
 		code = errorRequest.Code
 		message = errorRequest.Error()
+	}
+
+	var ubAuthError *u.ResponseDetails
+	if errors.As(err, &ubAuthError) {
+		code = ubAuthError.Code
+		message = ubAuthError.Message
 	}
 
 	var fiberError *fiber.Error

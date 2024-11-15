@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgres:
+    container_name: "postgres"
+    image: postgres:13-alpine
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    networks:
+      - parkirkuy
+
+  parkirkuy:
+    container_name: "parkirkuy"
+    build:
+      context: ../parkirkuy
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    ports:
+      - "${PORT}:${PORT}"
+    networks:
+      - parkirkuy
+    depends_on:
+      - postgres
+
+networks:
+  parkirkuy:
+    name: parkirkuy
+    driver: bridge

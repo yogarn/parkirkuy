@@ -1,8 +1,8 @@
 package model
 
 type UBAuthReq struct {
-	Identifier string `json:"identifier"`
-	Password   string `json:"password"`
+	Identifier string `json:"identifier" form:"identifier" validate:"required"`
+	Password   string `json:"password" form:"password" validate:"required"`
 }
 
 type UBAuthRes struct {

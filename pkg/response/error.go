@@ -32,6 +32,9 @@ var (
 	FailedToParseToken    = NewErrorRequest(http.StatusUnauthorized, "Failed to parse token")
 	InvalidToken          = NewErrorRequest(http.StatusUnauthorized, "Invalid token")
 
+	// Parking Lot
+	ParkingLotNotFound = NewErrorRequest(http.StatusNotFound, "Parking Lot not found")
+
 	// Reservation
 	ReservationNotFound = NewErrorRequest(http.StatusNotFound, "Reservation not found")
 	ReservationExists   = NewErrorRequest(http.StatusConflict, "Reservation already exists")

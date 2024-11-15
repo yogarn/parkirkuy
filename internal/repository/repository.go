@@ -5,11 +5,13 @@ import (
 )
 
 type Repository struct {
-	UserRepository IUserRepository
+	UserRepository       IUserRepository
+	ParkingLotRepository IParkingLotRepository
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		UserRepository: NewUserRepository(db),
+		UserRepository:       NewUserRepository(db),
+		ParkingLotRepository: NewParkingLotRepository(db),
 	}
 }

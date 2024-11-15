@@ -24,6 +24,13 @@ func MountAuth(routerGroup fiber.Router, r *Rest) {
 	routerGroup.Post("/login", r.LoginUBAuth)
 }
 
+func MountParkingLot(routerGroup fiber.Router, r *Rest) {
+	parkingLot := routerGroup.Group("/parking-lot")
+	parkingLot.Post("/", r.CreateParkingLot)
+	parkingLot.Get("/:id", r.GetParkingLotByID)
+	parkingLot.Get("/", r.SearchParkingLotByLocation)
+}
+
 func (r *Rest) RegisterRoutes() {
 	routerGroup := r.router.Group("/api/v1")
 
@@ -32,6 +39,7 @@ func (r *Rest) RegisterRoutes() {
 	})
 
 	MountAuth(routerGroup, r)
+	MountParkingLot(routerGroup, r)
 }
 
 func (r *Rest) Start(port string) error {

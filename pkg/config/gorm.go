@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/yogarn/parkirkuy/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -40,5 +41,5 @@ func StartGorm() *gorm.DB {
 }
 
 func migrate(db *gorm.DB) {
-	db.AutoMigrate()
+	db.AutoMigrate(&entity.ParkingLot{}, &entity.User{}, &entity.Reservation{}, &entity.VehicleData{})
 }

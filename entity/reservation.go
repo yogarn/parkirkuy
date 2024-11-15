@@ -7,10 +7,10 @@ import (
 )
 
 type Reservation struct {
-	Id           ulid.ULID  `json:"id" gorm:"type:ulid;primaryKey;not null"`
-	UserId       ulid.ULID  `json:"userId" gorm:"type:ulid;not null"`
+	Id           ulid.ULID  `json:"id" gorm:"primaryKey;not null"`
+	UserId       ulid.ULID  `json:"userId" gorm:"not null"`
 	User         User       `json:"user" gorm:"foreignKey:UserId"`
-	ParkingLotId ulid.ULID  `json:"parkingLotId" gorm:"type:ulid;not null"`
+	ParkingLotId ulid.ULID  `json:"parkingLotId" gorm:"not null"`
 	ParkingLot   ParkingLot `json:"parkingLot" gorm:"foreignKey:ParkingLotId"`
 	StartTime    time.Time  `json:"startTime" gorm:"not null"`
 	EndTime      time.Time  `json:"endTime" gorm:"not null"`

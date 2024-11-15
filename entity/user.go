@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	Id        ulid.ULID `json:"id" gorm:"type:ulid;primaryKey;not null"`
+	Id        ulid.ULID `json:"id" gorm:"primaryKey;not null"`
 	Name      string    `json:"name" form:"name" validate:"required" gorm:"not null"`
 	Username  string    `json:"username" form:"username" validate:"required,gte=6,lte=32" gorm:"unique;not null"`
 	Password  string    `json:"password" form:"password" validate:"required,gte=8"`

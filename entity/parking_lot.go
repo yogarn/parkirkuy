@@ -7,7 +7,7 @@ import (
 )
 
 type ParkingLot struct {
-	Id            ulid.ULID `json:"id" gorm:"type:ulid;primaryKey;not null"`
+	Id            ulid.ULID `json:"id" gorm:"primaryKey;not null"`
 	Name          string    `json:"name" form:"name" validate:"required" gorm:"not null"`
 	TotalCapacity int64     `json:"totalCapacity" form:"totalCapacity" validate:"required" gorm:"not null"`
 	Available     int64     `json:"available" form:"available" validate:"required" gorm:"not null"`

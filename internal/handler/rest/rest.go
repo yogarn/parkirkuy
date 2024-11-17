@@ -29,6 +29,8 @@ func MountParkingLot(routerGroup fiber.Router, r *Rest) {
 	parkingLot.Post("/", r.CreateParkingLot)
 	parkingLot.Get("/:id", r.GetParkingLotByID)
 	parkingLot.Get("/", r.SearchParkingLotByLocation)
+	parkingLot.Patch("/:id", r.UpdateParkingLot)
+	parkingLot.Delete("/:id", r.DeleteParkingLot)
 }
 
 func (r *Rest) RegisterRoutes() {

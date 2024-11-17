@@ -11,6 +11,15 @@ type ParkingLotReq struct {
 	Picture       string `json:"picture" form:"picture"`
 }
 
+type ParkingLotPatchReq struct {
+	Name          string `json:"name" form:"name"`
+	TotalCapacity int64  `json:"totalCapacity" form:"totalCapacity"`
+	Available     int64  `json:"available" form:"available"`
+	Location      string `json:"location" form:"location"`
+	Coordinate    string `json:"coordinate" form:"coordinate"`
+	Picture       string `json:"picture" form:"picture"`
+}
+
 type ParkingLotRes struct {
 	Id            ulid.ULID `json:"id"`
 	Name          string    `json:"name"`

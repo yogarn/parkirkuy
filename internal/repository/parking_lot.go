@@ -11,6 +11,8 @@ type IParkingLotRepository interface {
 	CreateParkingLot(parkingLot *entity.ParkingLot) (err error)
 	GetParkingLotByID(id ulid.ULID) (parkingLot *entity.ParkingLot, err error)
 	SearchParkingLotByLocation(location string) (parkingLots []*entity.ParkingLot, err error)
+	UpdateParkingLot(parkingLot *entity.ParkingLot) (err error)
+	DeleteParkingLot(id ulid.ULID) (err error)
 }
 
 type ParkingLotRepository struct {
@@ -52,4 +54,33 @@ func (r *ParkingLotRepository) SearchParkingLotByLocation(location string) (park
 	}
 
 	return parkingLots, nil
+}
+
+func (r *ParkingLotRepository) UpdateParkingLot(parkingLot *entity.ParkingLot) (err error) {
+	res := r.db.Updates(parkingLot)
+
+	if res.RowsAffected == 0 {
+		return &response.ParkingLotNotFound
+	}
+
+	err = res.Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *ParkingLotRepository) DeleteParkingLot(id ulid.ULID) (err error) {
+	res := r.db.Where("id = ?", id).Delete(&entity.ParkingLot{})
+	if res.RowsAffected == 0 {
+		return &response.ParkingLotNotFound
+	}
+
+	err = res.Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

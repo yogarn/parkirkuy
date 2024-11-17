@@ -8,13 +8,15 @@ import (
 )
 
 type Service struct {
-	UserService       IUserService
-	ParkingLotService IParkingLotService
+	UserService        IUserService
+	ParkingLotService  IParkingLotService
+	ReservationService IReservationService
 }
 
 func NewService(repository *repository.Repository, bcrypt bcrypt.IBcrypt, jwt jwt.IJwt, ubAuth ub_auth.IUbAuth) *Service {
 	return &Service{
-		UserService:       NewUserService(repository.UserRepository, jwt, ubAuth),
-		ParkingLotService: NewParkingLotService(repository.ParkingLotRepository),
+		UserService:        NewUserService(repository.UserRepository, jwt, ubAuth),
+		ParkingLotService:  NewParkingLotService(repository.ParkingLotRepository),
+		ReservationService: NewReservationService(repository.ReservationRepository),
 	}
 }

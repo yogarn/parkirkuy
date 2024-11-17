@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/oklog/ulid/v2"
 	"github.com/yogarn/parkirkuy/entity"
 	"github.com/yogarn/parkirkuy/pkg/response"
 	"gorm.io/gorm"
@@ -10,6 +11,7 @@ type IUserRepository interface {
 	CreateUser(user *entity.User) (err error)
 	GetUserByUsername(username string) (user *entity.User, err error)
 	GetUserByEmail(email string) (user *entity.User, err error)
+	GetUserById(id ulid.ULID) (user *entity.User, err error)
 }
 
 type UserRepository struct {
@@ -53,5 +55,17 @@ func (r *UserRepository) GetUserByEmail(email string) (user *entity.User, err er
 		return nil, err
 	}
 
+	return user, nil
+}
+
+func (r *UserRepository) GetUserById(id ulid.ULID) (user *entity.User, err error) {
+	user = new(entity.User)
+	err = r.db.Where("id = ?", id).First(user).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, &response.UserNotFound
+		}
+		return nil, err
+	}
 	return user, nil
 }

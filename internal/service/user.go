@@ -6,6 +6,7 @@ import (
 	"github.com/oklog/ulid/v2"
 	"github.com/yogarn/parkirkuy/entity"
 	"github.com/yogarn/parkirkuy/internal/repository"
+	"github.com/yogarn/parkirkuy/model"
 	"github.com/yogarn/parkirkuy/pkg/jwt"
 	"github.com/yogarn/parkirkuy/pkg/response"
 	"github.com/yogarn/parkirkuy/pkg/ub_auth"
@@ -13,6 +14,7 @@ import (
 
 type IUserService interface {
 	LoginUB(identifier string, password string) (jwtToken string, err error)
+	GetUserById(id string) (user *model.UserRes, err error)
 }
 
 type UserService struct {
@@ -67,4 +69,25 @@ func (s *UserService) LoginUB(identifier string, password string) (jwtToken stri
 	}
 
 	return token, nil
+}
+
+func (s *UserService) GetUserById(id string) (user *model.UserRes, err error) {
+	userId, err := ulid.Parse(id)
+	if err != nil {
+		return nil, &response.UserNotFound
+	}
+	userEntity, err := s.UserRepository.GetUserById(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	user = &model.UserRes{
+		Id:       userEntity.Id.String(),
+		Name:     userEntity.Name,
+		Username: userEntity.Username,
+		Email:    userEntity.Email,
+		Picture:  userEntity.Picture,
+	}
+
+	return user, nil
 }

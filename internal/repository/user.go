@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"errors"
-
 	"github.com/yogarn/parkirkuy/entity"
 	"github.com/yogarn/parkirkuy/pkg/response"
 	"gorm.io/gorm"
@@ -36,8 +34,10 @@ func (r *UserRepository) CreateUser(user *entity.User) (err error) {
 func (r *UserRepository) GetUserByUsername(username string) (user *entity.User, err error) {
 	user = new(entity.User)
 	err = r.db.Where("username = ?", username).First(user).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, &response.UserNotFound
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, &response.UserNotFound
+		}
 	}
 
 	return user, nil
@@ -46,8 +46,11 @@ func (r *UserRepository) GetUserByUsername(username string) (user *entity.User, 
 func (r *UserRepository) GetUserByEmail(email string) (user *entity.User, err error) {
 	user = new(entity.User)
 	err = r.db.Where("email = ?", email).First(user).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, &response.UserNotFound
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, &response.UserNotFound
+		}
+		return nil, err
 	}
 
 	return user, nil

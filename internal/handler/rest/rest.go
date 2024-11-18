@@ -43,6 +43,13 @@ func MountReservation(routerGroup fiber.Router, r *Rest) {
 	reservation.Delete("/:id", r.DeleteReservation)
 }
 
+func MountVehicleData(routerGroup fiber.Router, r *Rest) {
+	vehicleData := routerGroup.Group("/vehicle-data", r.middleware.AuthenticateUser)
+	vehicleData.Post("/", r.CreateVehicleData)
+	vehicleData.Get("/", r.GetVehicleDataByUserId)
+	vehicleData.Get("/:id", r.GetVehicleDataById)
+}
+
 func (r *Rest) RegisterRoutes() {
 	routerGroup := r.router.Group("/api/v1")
 
@@ -53,6 +60,7 @@ func (r *Rest) RegisterRoutes() {
 	MountAuth(routerGroup, r)
 	MountParkingLot(routerGroup, r)
 	MountReservation(routerGroup, r)
+	MountVehicleData(routerGroup, r)
 }
 
 func (r *Rest) Start(port string) error {

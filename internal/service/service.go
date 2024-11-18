@@ -11,6 +11,7 @@ type Service struct {
 	UserService        IUserService
 	ParkingLotService  IParkingLotService
 	ReservationService IReservationService
+	VehicleDataService IVehicleDataService
 }
 
 func NewService(repository *repository.Repository, bcrypt bcrypt.IBcrypt, jwt jwt.IJwt, ubAuth ub_auth.IUbAuth) *Service {
@@ -18,5 +19,6 @@ func NewService(repository *repository.Repository, bcrypt bcrypt.IBcrypt, jwt jw
 		UserService:        NewUserService(repository.UserRepository, jwt, ubAuth),
 		ParkingLotService:  NewParkingLotService(repository.ParkingLotRepository),
 		ReservationService: NewReservationService(repository.ReservationRepository),
+		VehicleDataService: NewVehicleDataService(repository.VehicleDataRepository),
 	}
 }

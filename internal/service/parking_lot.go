@@ -8,8 +8,9 @@ import (
 )
 
 type IParkingLotService interface {
-	CreateParkingLot(parkingLot *model.ParkingLotPatchReq) (err error)
-	GetParkingLotByID(id string) (parkingLot *model.ParkingLotPatchReq, err error)
+	CreateParkingLot(parkingLot *model.ParkingLotReq) (err error)
+	GetParkingLotByID(id string) (parkingLot *model.ParkingLotRes, err error)
+	GetParkingLotAvailableByID(id string) (available int64, err error)
 	SearchParkingLotByLocation(location string) (parkingLots []*model.ParkingLotRes, err error)
 	UpdateParkingLot(parkingLot *model.ParkingLotPatchReq, id string) (err error)
 	DeleteParkingLot(id string) (err error)
@@ -25,12 +26,11 @@ func NewParkingLotService(parkingLotRepository repository.IParkingLotRepository)
 	}
 }
 
-func (s *ParkingLotService) CreateParkingLot(parkingLot *model.ParkingLotPatchReq) (err error) {
+func (s *ParkingLotService) CreateParkingLot(parkingLot *model.ParkingLotReq) (err error) {
 	parkingLotEntity := entity.ParkingLot{
 		Id:            ulid.Make(),
 		Name:          parkingLot.Name,
 		TotalCapacity: parkingLot.TotalCapacity,
-		Available:     parkingLot.Available,
 		Location:      parkingLot.Location,
 		Coordinate:    parkingLot.Coordinate,
 		Picture:       parkingLot.Picture,
@@ -44,7 +44,7 @@ func (s *ParkingLotService) CreateParkingLot(parkingLot *model.ParkingLotPatchRe
 	return nil
 }
 
-func (s *ParkingLotService) GetParkingLotByID(id string) (parkingLot *model.ParkingLotPatchReq, err error) {
+func (s *ParkingLotService) GetParkingLotByID(id string) (parkingLot *model.ParkingLotRes, err error) {
 	parkingLotId, err := ulid.Parse(id)
 	if err != nil {
 		return nil, err
@@ -55,16 +55,36 @@ func (s *ParkingLotService) GetParkingLotByID(id string) (parkingLot *model.Park
 		return nil, err
 	}
 
-	parkingLot = &model.ParkingLotPatchReq{
+	parkingLot = &model.ParkingLotRes{
 		Name:          parkingLotEntity.Name,
 		TotalCapacity: parkingLotEntity.TotalCapacity,
-		Available:     parkingLotEntity.Available,
 		Location:      parkingLotEntity.Location,
 		Coordinate:    parkingLotEntity.Coordinate,
 		Picture:       parkingLotEntity.Picture,
 	}
 
+	availability, err := s.GetParkingLotAvailableByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	parkingLot.Available = availability
+
 	return parkingLot, nil
+}
+
+func (s *ParkingLotService) GetParkingLotAvailableByID(id string) (available int64, err error) {
+	parkingLotId, err := ulid.Parse(id)
+	if err != nil {
+		return -1, err
+	}
+
+	available, err = s.ParkingLotRepository.GetParkingLotAvailableByID(parkingLotId)
+	if err != nil {
+		return available, err
+	}
+
+	return available, nil
 }
 
 func (s *ParkingLotService) SearchParkingLotByLocation(location string) (parkingLots []*model.ParkingLotRes, err error) {
@@ -78,11 +98,17 @@ func (s *ParkingLotService) SearchParkingLotByLocation(location string) (parking
 			Id:            parkingLotEntity.Id,
 			Name:          parkingLotEntity.Name,
 			TotalCapacity: parkingLotEntity.TotalCapacity,
-			Available:     parkingLotEntity.Available,
 			Location:      parkingLotEntity.Location,
 			Coordinate:    parkingLotEntity.Coordinate,
 			Picture:       parkingLotEntity.Picture,
 		}
+
+		availability, err := s.GetParkingLotAvailableByID(parkingLotEntity.Id.String())
+		if err != nil {
+			return nil, err
+		}
+
+		parkingLot.Available = availability
 
 		parkingLots = append(parkingLots, parkingLot)
 	}
@@ -100,7 +126,6 @@ func (s *ParkingLotService) UpdateParkingLot(parkingLot *model.ParkingLotPatchRe
 		Id:            parkingLotId,
 		Name:          parkingLot.Name,
 		TotalCapacity: parkingLot.TotalCapacity,
-		Available:     parkingLot.Available,
 		Location:      parkingLot.Location,
 		Coordinate:    parkingLot.Coordinate,
 		Picture:       parkingLot.Picture,

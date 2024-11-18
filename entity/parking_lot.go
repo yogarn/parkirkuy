@@ -10,7 +10,6 @@ type ParkingLot struct {
 	Id            ulid.ULID `json:"id" gorm:"primaryKey;not null"`
 	Name          string    `json:"name" form:"name" validate:"required" gorm:"not null"`
 	TotalCapacity int64     `json:"totalCapacity" form:"totalCapacity" validate:"required" gorm:"not null"`
-	Available     int64     `json:"available" form:"available" validate:"required" gorm:"not null"`
 	Location      string    `json:"location" form:"location" validate:"required" gorm:"not null"`
 	Coordinate    string    `json:"coordinate" form:"coordinate" validate:"required" gorm:"unique;not null"`
 	Picture       string    `json:"picture" form:"picture"`

@@ -8,7 +8,7 @@ import (
 )
 
 func (r *Rest) CreateParkingLot(ctx *fiber.Ctx) (err error) {
-	req := new(model.ParkingLotPatchReq)
+	req := new(model.ParkingLotReq)
 	if err = ctx.BodyParser(req); err != nil {
 		return err
 	}
